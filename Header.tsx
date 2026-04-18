@@ -46,8 +46,8 @@ export default function Header() {
                 className="font-mono font-bold text-base tracking-tight"
                 style={{ color: 'var(--foreground)' }}
               >
-                Ou
-                <span style={{ color: 'var(--color-blue)' }}>su</span>
+                Poi
+                <span style={{ color: 'var(--color-blue)' }}></span>
               </span>
               <span
                 className="hidden sm:inline text-xs font-mono ml-1"

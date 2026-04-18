@@ -8,7 +8,7 @@ import { useTheme } from './ThemeContext';
 import { Github, Twitter, Mail, Shield, Terminal, Code2, Award, BookOpen } from 'lucide-react';
 import TagPill from './TagPill';
 
-import avatarImg from './image/ousu.jpeg';
+import avatarImg from './image/poi.jpg';
 
 const AVATAR_IMG = avatarImg;
 

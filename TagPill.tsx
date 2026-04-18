@@ -9,7 +9,8 @@ import type { CSSProperties } from 'react';
 const tagColorMap: Record<string, string> = {
   'PT': 'red',
   'ctf': 'blue',
-  'web-security': 'purple',
+  'web': 'purple',
+  'HTB': 'orange',
 };
 
 function getTagColor(tag: string): string {

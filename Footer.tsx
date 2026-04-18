@@ -23,7 +23,7 @@ export default function Footer() {
                 className="font-mono text-sm font-semibold"
                 style={{ color: 'var(--foreground)' }}
               >
-                Ou<span style={{ color: 'var(--color-blue)' }}>su</span>
+                Poi<span style={{ color: 'var(--color-blue)' }}></span>
               </span>
               <span
                 className="text-xs font-mono px-1.5 py-0.5 rounded-sm"
