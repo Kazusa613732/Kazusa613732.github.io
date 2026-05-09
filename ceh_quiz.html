@@ -69,6 +69,22 @@
     border-bottom: 1px solid var(--border);
   }
 
+  #reset-btn {
+    margin: 8px 14px 0;
+    padding: 6px 10px;
+    width: calc(100% - 28px);
+    background: transparent;
+    border: 1px solid var(--warn);
+    color: var(--warn);
+    border-radius: var(--radius);
+    font-family: 'Sora', sans-serif;
+    font-size: 11px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.15s, background 0.15s;
+  }
+  #reset-btn:hover { opacity: 1; background: rgba(255,80,80,0.08); }
+
   #sidebar-header h2 {
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
@@ -452,6 +468,7 @@
     <h2>錯題紀錄</h2>
     <p>點擊可跳至該題頁面</p>
   </div>
+  <button id="reset-btn" onclick="resetProgress()">🔄 重置所有進度</button>
   <div id="wrong-list">
     <div id="empty-msg">尚無錯題<br>繼續加油！✓</div>
   </div>
@@ -711,6 +728,12 @@ function updateSidebar() {
     document.body.style.userSelect = '';
   });
 })();
+
+function resetProgress() {
+  if (!confirm('確定要清除所有答題紀錄，重新開始嗎？')) return;
+  try { localStorage.removeItem('ceh_quiz_state'); } catch(e) {}
+  location.reload();
+}
 
 // Initial render
 render();
