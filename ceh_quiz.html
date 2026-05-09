@@ -35,7 +35,8 @@
   /* ── Sidebar ── */
   #sidebar {
     width: 280px;
-    min-width: 280px;
+    min-width: 120px;
+    max-width: 600px;
     background: var(--surface);
     border-right: 1px solid var(--border);
     display: flex;
@@ -44,6 +45,23 @@
     position: sticky;
     top: 0;
     overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  #sidebar-resize {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 5px;
+    height: 100%;
+    cursor: col-resize;
+    background: transparent;
+    z-index: 20;
+    transition: background 0.15s;
+  }
+  #sidebar-resize:hover, #sidebar-resize.dragging {
+    background: var(--accent);
+    opacity: 0.5;
   }
 
   #sidebar-header {
@@ -257,6 +275,8 @@
     color: var(--text);
     transition: background 0.15s, border-color 0.15s, transform 0.1s;
     line-height: 1.5;
+    user-select: text;
+    -webkit-user-select: text;
   }
 
   .option-btn:hover:not(:disabled) {
@@ -266,6 +286,7 @@
   }
 
   .option-btn:disabled { cursor: default; }
+  .option-btn.submitted-state { cursor: default; }
 
   .opt-letter {
     font-family: 'JetBrains Mono', monospace;
@@ -426,6 +447,7 @@
 <body>
 
 <aside id="sidebar">
+  <div id="sidebar-resize"></div>
   <div id="sidebar-header">
     <h2>錯題紀錄</h2>
     <p>點擊可跳至該題頁面</p>
@@ -498,11 +520,12 @@ function render() {
       } else if (letter === s.selected) {
         cls += ' selected';
       }
-      const disabled = s.submitted ? 'disabled' : '';
-      optionsHtml += `<button class="${cls}" onclick="selectOption(${globalIdx}, '${letter}')" ${disabled}>
+      const clickHandler = s.submitted ? '' : `onclick="selectOption(${globalIdx}, '${letter}')"`;
+      const pointerStyle = s.submitted ? 'style="cursor:default"' : '';
+      optionsHtml += `<div class="${cls}" ${clickHandler} ${pointerStyle}>
         <span class="opt-letter">${letter}</span>
         <span>${escHtml(q.options[letter])}</span>
-      </button>`;
+      </div>`;
     });
 
     const isCorrect = s.submitted && s.selected === q.answer;
@@ -652,6 +675,34 @@ function updateSidebar() {
     `).join('');
   }
 }
+
+// Sidebar resize
+(function() {
+  const sidebar = document.getElementById('sidebar');
+  const handle = document.getElementById('sidebar-resize');
+  let dragging = false, startX = 0, startW = 0;
+  handle.addEventListener('mousedown', function(e) {
+    dragging = true;
+    startX = e.clientX;
+    startW = sidebar.offsetWidth;
+    handle.classList.add('dragging');
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', function(e) {
+    if (!dragging) return;
+    const newW = Math.max(120, Math.min(600, startW + (e.clientX - startX)));
+    sidebar.style.width = newW + 'px';
+  });
+  document.addEventListener('mouseup', function() {
+    if (!dragging) return;
+    dragging = false;
+    handle.classList.remove('dragging');
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+  });
+})();
 
 // Initial render
 render();
