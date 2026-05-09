@@ -604,9 +604,17 @@ function goToPage(page) {
 
 function goToQuestionPage(globalIdx) {
   const page = Math.floor(globalIdx / PER_PAGE);
-  goToPage(page);
+  currentPage = page;
+  window.scrollTo(0, 0);
+  document.getElementById('main').scrollTo(0, 0);
+  render();
+  requestAnimationFrame(() => {
+    const card = document.getElementById('card-' + globalIdx);
+    if (card) {
+      card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
 }
-
 function renderPageDots() {
   const container = document.getElementById('page-dots');
   container.innerHTML = '';
